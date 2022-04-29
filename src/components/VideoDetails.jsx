@@ -4,7 +4,7 @@ import "../Styles.css";
 class VideoDetails extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { arr: "", obj: {}, videoId: "" };
+    this.state = { arr: "", obj: {}, videoId: "", title: "" };
   }
 
   getVievsInfo = async (video) => {
@@ -24,7 +24,8 @@ class VideoDetails extends React.Component {
   async componentDidMount() {
     let a = await this.getChannelInfo(this.props.info.snippet.channelId);
     let b = await this.getVievsInfo(this.props.info.id.videoId);
-    this.setState({ arr: a, obj: b });
+    let c = await this.props.info.snippet.title;
+    this.setState({ arr: a, obj: b, title: c });
   }
   hisobla = (num) => {
     let str = String(num);
@@ -35,11 +36,11 @@ class VideoDetails extends React.Component {
     }
   };
   getIdClick = () => {
-    // this.setState({ videoId: this.props.info.id.videoId });
-    // this.props.vidId = this.props.info.id.videoId;
-    this.props.vidId(this.props.info.id.videoId);
-    // console.log(this.props.vidId);
-    // console.log(this.props.info.id.videoId);
+    this.props.vidId(this.props.info.id.videoId, {
+      repo: this.state.obj,
+      title: this.state.title,
+    });
+    this.props.klass("videos__small--box");
   };
   render() {
     return (
