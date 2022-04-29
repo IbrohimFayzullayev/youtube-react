@@ -7,7 +7,7 @@ import VideoItem from "./VideoItem";
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { inputKey: "", videoList: [], videoId: "" };
+    this.state = { inputKey: "", videoList: [], videoId: "", videReport: {} };
   }
   getData = async (keyWord) => {
     const key = "AIzaSyDXZdLg3XezWfbwftMKP7r2mJyzOf2AO1Q";
@@ -26,17 +26,19 @@ class App extends React.Component {
     // console.log(data.data);
     this.setState({ videoList: data });
   };
-  getVideoID = (id) => {
-    this.setState({ videoId: id });
+  getVideoID = (id, report) => {
+    this.setState({ videoId: id, videReport: report });
     console.log(this.state.videoId);
+    console.log(this.state.videReport);
   };
 
   showVideo = () => {
     if (this.state.videoId) {
       return (
-        <div>
-          <VideoItem dataId={this.state.videoId} />
-        </div>
+        <VideoItem
+          dataId={this.state.videoId}
+          dataRepo={this.state.videReport}
+        />
       );
     }
   };
@@ -45,10 +47,12 @@ class App extends React.Component {
       <div className="contents">
         <MenuBar />
         <div className="primary">
-          <SearchBar request={this.getData} />
-          <VideoList data={this.state.videoList} idVideo={this.getVideoID} />
+          <SearchBar request={this.getData}  />
+          <div className="primary__second">
+            {this.showVideo()}
+            <VideoList data={this.state.videoList} idVideo={this.getVideoID} />
+          </div>
         </div>
-        {this.showVideo()};
       </div>
     );
   }
